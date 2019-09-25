@@ -1,0 +1,198 @@
+﻿@model Tuple<List<User>, List<Video>>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/chart/exporting.js"></script>
+<script src="~/Scripts/chart/highcharts.js"></script>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="jumbotron">
+                <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="jumbotron">
+                <div id="container2" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-6" style="border:3px; border-style:dotted; border-color:blueviolet; height:400px;">
+            <div style="margin-left:20%; margin-right:20%;">
+                <div style="top:30px; left:20px;">
+                    <p>En çok İzlenen Videolar</p>
+                </div>
+
+                @{
+                    var max = 0;
+                    foreach (Video item in Model.Item2)
+                    {
+                        if (max < item.Displayings.Where(x => x.VideoID == item.ID && x.Video.Status != Status.Deleted).Count())
+                        {
+                            max = item.Displayings.Where(x => x.VideoID == item.ID && x.Video.Status != Status.Deleted).Count();
+
+                        }
+                        else
+                        {
+                            <p>@item.Title</p>
+                            <video width="230" height="120" src="~/Content/uploads/@item.VideoPath" alt="@item.Title"></video>
+                        }
+
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="col-md-6" style="border:3px; border-style:dotted; border-color:blueviolet; height:400px;">
+            <div style="margin-left:20%; margin-right:20%;">
+                <div style="top:30px; left:20px;">
+                    <p>En çok Beğenilen Videolar</p>
+                </div>
+
+                @{
+                    var maxi = 0;
+                    foreach (Video item in Model.Item2)
+                    {
+                        if (maxi < item.LikeVideos.Where(x => x.VideoID == item.ID && x.Video.Status != Status.Deleted).Count())
+                        {
+                            maxi = item.LikeVideos.Where(x => x.VideoID == item.ID && x.Video.Status != Status.Deleted).Count();
+
+                        }
+                        else
+                        {
+                            <p>@item.Title</p>
+                            <video width="230" height="120" src="~/Content/uploads/@item.VideoPath" alt="@item.Title"></video>
+                        }
+
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+    $(document).ready(function () {
+        $.getJSON("/Dashboard/GetData", function (data) {
+
+            Highcharts.chart('container', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Kullanıcı Cinsiyet Oranı'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Brands',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Erkek',
+                        y: data.Male
+                    }, {
+                        name: 'Kadın',
+                        y: data.Female
+                    }]
+                }]
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $.getJSON("/Dashboard/GetKategoriData", function (data) {
+            Highcharts.chart('container2', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie'
+                },
+                title: {
+                    text: 'Video Kategori Oranı'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            }
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Brands',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Müzik',
+                        y: data.Muzik
+                    }, {
+                        name: 'Haber',
+                        y: data.Haber
+                    }, {
+                        name: 'Eğlence',
+                        y: data.Eglence
+                    }, {
+                        name: 'Oyun',
+                        y: data.Oyun
+                    }, {
+                        name: 'Spor',
+                        y: data.Spor
+                    }, {
+                        name: 'Eğitim',
+                        y: data.Egitim
+                    }, {
+                        name: 'Blog',
+                        y: data.Blog
+                    }, {
+                        name: 'Bilim ve Teknoloji',
+                        y: data.Bilim
+                    }, {
+                        name: 'Moda ve Güzellik',
+                        y: data.Moda
+                    }, {
+                        name: 'Gezi ve Etkinlik',
+                        y: data.Gezi
+                    }, {
+                        name: 'Film ve Animasyon',
+                        y: data.Film
+                    }]
+                }]
+            });
+        });
+    });
+
+</script>

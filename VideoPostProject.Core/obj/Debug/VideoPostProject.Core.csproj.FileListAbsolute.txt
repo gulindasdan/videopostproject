@@ -1,0 +1,12 @@
+C:\Users\Dell\source\repos\VideoPostProject\VideoPostProject.Core\bin\Debug\VideoPostProject.Core.dll
+C:\Users\Dell\source\repos\VideoPostProject\VideoPostProject.Core\bin\Debug\VideoPostProject.Core.pdb
+C:\Users\Dell\source\repos\VideoPostProject\VideoPostProject.Core\obj\Debug\VideoPostProject.Core.csprojAssemblyReference.cache
+C:\Users\Dell\source\repos\VideoPostProject\VideoPostProject.Core\obj\Debug\VideoPostProject.Core.csproj.CoreCompileInputs.cache
+C:\Users\Dell\source\repos\VideoPostProject\VideoPostProject.Core\obj\Debug\VideoPostProject.Core.dll
+C:\Users\Dell\source\repos\VideoPostProject\VideoPostProject.Core\obj\Debug\VideoPostProject.Core.pdb
+C:\Users\Dell\source\repos\VideoPostProject\VideoPostProject.Core\bin\Debug\VideoPostProject.Core.dll.config
+C:\Users\Dell\source\repos\VideoPostProject\VideoPostProject.Core\bin\Debug\EntityFramework.dll
+C:\Users\Dell\source\repos\VideoPostProject\VideoPostProject.Core\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Dell\source\repos\VideoPostProject\VideoPostProject.Core\bin\Debug\EntityFramework.xml
+C:\Users\Dell\source\repos\VideoPostProject\VideoPostProject.Core\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Dell\source\repos\VideoPostProject\VideoPostProject.Core\obj\Debug\VideoPostProject.Core.csproj.CopyComplete

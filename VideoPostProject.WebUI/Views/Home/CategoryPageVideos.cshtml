@@ -1,0 +1,102 @@
+﻿@model List<Video>
+@{
+    ViewBag.Title = "CategoryPageVideos";
+}
+<div id="all-output" class="col-md-10">
+    <!-- Category Cover Image -->
+    <div id="category-cover-image">
+        <div class="image-in">
+            <img src="~/Content/demo_img/category-img.jpg" alt="">
+        </div>
+        <h1 class="title"><i class="fa fa-music"></i> @ViewBag.KategoriAdi</h1>
+        @*<ul class="category-info">
+                <li>97,174,199 subscribers </li>
+                <li>255,525,456 Views</li>
+                <li>45,23,65 Channel No</li>
+                <li class="subscribe"><a href="#">Subscribe</a></li>
+            </ul>*@
+    </div>
+    <!-- // Category Cover Image -->
+    <!-- category -->
+    <div id="category">
+        <div class="row">
+
+            <div class="col-md-2">
+                <ul class="category-menu">
+
+                    <li><a href="@Url.Action("CategoryPage", "Home", new { id = ViewBag.KategoriID })">Anasayfa</a></li>
+                    <li class="active"><a href="@Url.Action("CategoryPage", "Home")">Videolar</a></li>
+                    <li><a href="@Url.Action("CategoryPageChannels", "Home", new { id = ViewBag.KategoriID })">Kanallar</a></li>
+                    @*<li><a href="05-category_playlists.html">playlists</a></li>
+                        <li><a href="06-category_about.html">about</a></li>*@
+
+                </ul>
+                <div class="share-in">
+                    <h1 class="title">Share in</h1>
+                    <ul class="social-link">
+                        <li class="facebook"><a href="#"><i class="fa fa-facebook"></i> 11200 </a></li>
+                        <li class="twitter"><a href="#"><i class="fa fa-twitter"></i> 514 </a></li>
+                        <li class="google-plus"><a href="#"><i class="fa fa-google-plus"></i> 514 </a></li>
+                        <li class="vimeo"><a href="#"><i class="fa fa-vimeo"></i> 155 </a></li>
+                    </ul>
+                </div>
+
+                <div class="advertising-block">
+                    <h1 class="title">Advertising</h1>
+                    <div class="advertising-code">
+                        <a href="#"><img src="~/Content/demo_img/adv.jpg" alt=""></a>
+                    </div>
+                </div>
+
+            </div><!-- // col-md-2 -->
+
+            <div class="col-md-10">
+
+                <div class="row">
+                    @foreach (Video item in Model)
+                    {
+                        <!-- video-item -->
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="video-item">
+                                <div class="thumb">
+                                    <div class="hover-efect"></div>
+                                    <small class="time">10:53</small>
+                                    <a href="@Url.Action("WatchVideo","Video",new { id=item.ID })"><video width="230" height="120" src="~/Content/uploads/@item.VideoPath" alt=""></video></a>
+                                </div>
+                                <div class="video-info">
+                                    <a href="@Url.Action("WatchVideo", "Video",new { id=item.ID })" class="title">@item.Title </a>
+                                    <a class="channel-name" href="@Url.Action("Index", "Profile",new { id=item.ID })">
+                                        @item.User.Name @item.User.Surname<span>
+                                            <i class="fa fa-check-circle"></i>
+                                        </span>
+                                    </a>
+                                    @if (item.DisplayingNumber == 0)
+                                    {
+                                        <span class="views"><i class="fa fa-eye"></i>@item.Displayings.Where(m => m.Status != VideoPostProject.Core.Entity.Enum.Status.Deleted).Count()</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="views"><i class="fa fa-eye"></i>@item.DisplayingNumber</span>
+                                    }
+
+                                    <span class="date"><i class="fa fa-clock-o"></i>@item.CreatedDate</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- // video-item -->
+                    }
+                </div><!-- // row -->
+                <!-- Loading More Videos -->
+                <div id="loading-more">
+                    <i class="fa fa-refresh faa-spin animated"></i> <span>Loading more</span>
+                </div>
+                <!-- // Loading More Videos -->
+
+            </div>
+
+
+        </div><!-- // row -->
+    </div>
+    <!-- // category -->
+
+</div>

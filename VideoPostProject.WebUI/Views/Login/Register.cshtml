@@ -1,0 +1,115 @@
+﻿@model User
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Video Post – Video Sharing HTML Template</title>
+    <meta name="keywords" content="Blog website templates" />
+    <meta name="description" content="Author - Personal Blog Wordpress Template">
+    <meta name="author" content="Rabie Elkheir">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/styles/login")
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800|Raleway:400,500,700|Roboto:300,400,500,700,900|Ubuntu:300,300i,400,400i,500,500i,700" rel="stylesheet">
+    @*<script type="text/javascript">
+                        function Click() {
+                            if (!document.getElementByID("chkRemember").checked) {
+                                alert(@ViewBag.Message);
+                            }
+                        }
+        </script>*@
+</head>
+
+<body class="sing-up-page">
+    <!--======= log_in_page =======-->
+    <div id="log-in" class="site-form log-in-form">
+
+        <div id="log-in-head">
+            <h1>Sing Up</h1>
+            <div id="logo"><a href="@Url.Action("Index","Home")"><img src="img/logo.png" alt=""></a></div>
+        </div>
+
+        <div class="form-output">
+            @using (Html.BeginForm("Register", "Login", FormMethod.Post))
+            {
+                <div class="form-group label-floating">
+                    <label class="control-label">İsim</label>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Adınızı giriniz.." })
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+                <div class="form-group label-floating">
+                    <label class="control-label">Soyad</label>
+                    @Html.TextBoxFor(m => m.Surname, new { @class = "form-control", @placeholder = "Soyadınızı giriniz.." })
+                    @Html.ValidationMessageFor(m => m.Surname)
+                </div>
+                <div class="form-group label-floating">
+                    <label class="control-label">Kullanıcı Adı</label>
+                    <span style="color:red;">@ViewBag.MessageKullanici</span>
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", @placeholder = "Kullanıcı adı giriniz.." })
+                    @Html.ValidationMessageFor(m => m.Username)
+                </div>
+                <div class="form-group label-floating">
+                    <label class="control-label">Email</label>
+                    <span style="color:red;">@ViewBag.MessageEmail</span>
+                    @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", @type = "email", @placeholder = "Email adresinizi giriniz.." })
+                    @Html.ValidationMessageFor(m => m.EmailAddress)
+                </div>
+                <div class="form-group label-floating">
+                    <label class="control-label">Şifre</label>
+                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @type = "password", @placeholder = "Şifrenizi giriniz.." })
+                    @Html.ValidationMessageFor(m => m.Password)
+                </div>
+                <div class="form-group label-floating">
+                    <label class="control-label">Ülke</label>
+                    @Html.DropDownList("CountryID", null, new { @class = "form-control" })
+                </div>
+                <div class="form-group label-floating">
+                    <label class="control-label">Cinsiyet</label>
+                    @Html.EnumDropDownListFor(x => x.Gender, null, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group label-floating">
+                    <label class="control-label">Kategori: </label>
+                    @Html.DropDownList("CategoryID", null, new { @class = "form-control" })
+                </div>
+
+                <div class="remember">
+                    <div class="checkbox">
+                        <label>
+                            <input name="chkTerms" type="checkbox" value="checked">
+                            @*@Html.CheckBox("chkRemember",false)*@
+                            I accept the <a href="#">Terms and Conditions</a> of the website
+                        </label>
+
+                    </div>
+
+                </div>
+                <span style="color:red;">@ViewBag.Message</span>
+                <button type="submit" class="btn btn-lg btn-primary full-width" onclick="Click()">Kaydol</button>
+
+                @*<div class="or"></div>
+
+                    <a href="#" class="btn btn-lg bg-facebook full-width btn-icon-left"><i class="fa fa-facebook" aria-hidden="true"></i>sign up with Facebook</a>
+
+                    <a href="#" class="btn btn-lg bg-twitter full-width btn-icon-left"><i class="fa fa-twitter" aria-hidden="true"></i>sign up with Twitter</a>*@
+
+
+                <p>Hesabınız var mı? <a href="@Url.Action("Login", "Login")" style="color:darkred;"> Oturum Açın !</a> </p>
+                <p>Oturum Açmadan <a href="@Url.Action("Index", "Home")" style="color:darkred;">Devam Edin...</a> </p>
+            }
+
+
+        </div>
+
+    </div>
+    <!--======= // log_in_page =======-->
+</body>
+
+
+</html>

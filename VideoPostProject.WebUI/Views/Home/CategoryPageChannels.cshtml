@@ -1,0 +1,162 @@
+﻿@model Tuple<List<User>, List<Subsribe>>
+@{
+    ViewBag.Title = "CategoryPageChannels";
+}
+<div id="all-output" class="col-md-10">
+    <!-- Category Cover Image -->
+    <div id="category-cover-image">
+        <div class="image-in">
+            <img src="~/Content/demo_img/category-img.jpg" alt="">
+        </div>
+        <h1 class="title"><i class="fa fa-music"></i> @ViewBag.KategoriAdi</h1>
+        @*<ul class="category-info">
+                <li>97,174,199 subscribers </li>
+                <li>255,525,456 Views</li>
+                <li>45,23,65 Channel No</li>
+                <li class="subscribe"><a href="#">Subscribe</a></li>
+            </ul>*@
+    </div>
+    <!-- // Category Cover Image -->
+    <!-- category -->
+    <div id="category">
+        <div class="row">
+            <div class="col-md-2">
+                <ul class="category-menu">
+
+                    <li><a href="@Url.Action("CategoryPage","Home",new { id = ViewBag.KategoriID })">Anasayfa</a></li>
+                    <li><a href="@Url.Action("CategoryPageVideos","Home",new { id = ViewBag.KategoriID})">Videolar</a></li>
+                    <li class="active"><a href="@Url.Action("CategoryPageChannels","Home")">Kanallar</a></li>
+                    @*<li><a href="05-category_playlists.html">playlists</a></li>
+                        <li><a href="06-category_about.html">about</a></li>*@
+
+
+                </ul>
+                <div class="share-in">
+                    <h1 class="title">Share in</h1>
+                    <ul class="social-link">
+                        <li class="facebook"><a href="#"><i class="fa fa-facebook"></i> 11200 </a></li>
+                        <li class="twitter"><a href="#"><i class="fa fa-twitter"></i> 514 </a></li>
+                        <li class="google-plus"><a href="#"><i class="fa fa-google-plus"></i> 514 </a></li>
+                        <li class="vimeo"><a href="#"><i class="fa fa-vimeo"></i> 155 </a></li>
+                    </ul>
+                </div>
+
+                <div class="advertising-block">
+                    <h1 class="title">Advertising</h1>
+                    <div class="advertising-code">
+                        <a href="#"><img src="~/Content/demo_img/adv.jpg" alt=""></a>
+                    </div>
+                </div>
+
+            </div><!-- // col-md-2 -->
+
+            <div class="col-md-10">
+
+                <div class="row">
+                    @foreach (User item in Model.Item1)
+                    {
+                        <!-- Chanels Item -->
+                        <div class="col-md-6">
+                            <div class="chanel-item">
+                                <div class="chanel-thumb">
+                                    <a href="@Url.Action("AboutMe","Profile" , new { id = item.ID})"><img src="~/Content/uploads/@item.ImagePath" alt=""></a>
+                                </div>
+                                <div class="chanel-info">
+                                    <a class="title" href="@Url.Action("AboutMe","Profile" , new { id = item.ID})">@item.Name @item.Surname</a>
+                                    <span class="subscribers">@item.Subsribes.Where(m => m.FolowedID == item.ID).Count()</span>
+                                </div>
+                                @if (Session["oturum"] != null)
+                                {
+                                    User gelen = (User)Session["oturum"];
+                                    var sonuc = Model.Item2.Any(m => m.FolowedID == gelen.ID && m.FolowerID == item.ID);
+                                    if (sonuc)
+                                    {
+                                        <button class="subscribe" name="subscribe" style="font-family: 'Roboto', sans-serif;
+    background-color: #00ff21;
+    height: 25px;
+    width: 85px;
+    text-align: center;
+    display: block;
+    float: right;
+    font-size: 11px;
+    font-weight: 900;
+    color: #FFF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-top: 25px;
+    position: relative;
+    z-index: 5;" onclick="Subscribe('@item.ID')">
+                                            Takip Ediliyor..
+                                        </button>
+
+                                    }
+                                }
+                                else
+                                {
+                                    <button name="subscribe" class="subscribe" style="font-family: 'Roboto', sans-serif;
+    background-color: #becccc;
+    height: 25px;
+    width: 85px;
+    text-align: center;
+    display: block;
+    float: right;
+    font-size: 11px;
+    font-weight: 900;
+    color: #FFF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-top: 25px;
+    position: relative;
+    z-index: 5;" onclick="Subscribe('@item.ID')">
+                                        Takip Et
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                        <!-- // Chanels Item -->
+                    }
+
+
+                </div><!-- // row -->
+                <!-- Loading More Videos -->
+                <div id="loading-more">
+                    <i class="fa fa-refresh faa-spin animated"></i> <span>Loading more</span>
+                </div>
+                <!-- // Loading More Videos -->
+
+            </div>
+
+
+        </div><!-- // row -->
+    </div>
+    <!-- // category -->
+
+</div>
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        function Subscribe(id) {
+            $.ajax({
+                type: 'POST',
+                url: '/Profile/Follow/' + id + '',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $(".subcribe").append("Takip Ediliyor..");
+                    if (data == false) {
+                        alert("Giriş Yapmalısınız!!");
+                    }
+                }
+                ,
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+        }
+    </script>
+
+}

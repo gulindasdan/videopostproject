@@ -1,0 +1,45 @@
+﻿@model List<Video>
+@{
+                /**/
+
+                ViewBag.Title = "Index";
+}
+
+<div id="all-output" class="col-md-10">
+    <h1 class="new-video-title"><i class="fa fa-bolt"></i> Trending</h1>
+    <div class="row">
+        @foreach (Video item in Model)
+        {
+            <!-- video-item -->
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="video-item">
+                    <div class="thumb">
+                        <div class="hover-efect"></div>
+                        <small class="time">10:53</small>
+                        <a href="@Url.Action("WatchVideo","Video", new { id=item.ID })"><video width="230" height="120" src="~/Content/uploads/@item.VideoPath" alt=""></video></a>
+                    </div>
+                    <div class="video-info">
+                        <a href="@Url.Action("WatchVideo", "Video", new { id=item.ID })" class="title">@item.Title </a>
+                        <a class="channel-name" href="@Url.Action("AboutMe", "Profile",new { id=item.User.ID })">
+                            @item.User.Name  @item.User.Surname<span>
+                                <i class="fa fa-check-circle"></i>
+                            </span>
+                        </a>
+                        <span class="views"><i class="fa fa-eye"></i>@item.Displayings.Where(m=>m.Status != VideoPostProject.Core.Entity.Enum.Status.Deleted).Count() </span>
+                        <span class="date"><i class="fa fa-clock-o"></i>@item.CreatedDate</span>
+                    </div>
+                </div>
+            </div>
+            <!-- // video-item -->
+
+
+         }
+
+    </div><!-- // row -->
+    <!-- Loading More Videos -->
+    <div id="loading-more">
+        <i class="fa fa-refresh faa-spin animated"></i> <span>Loading more</span>
+    </div>
+    <!-- // Loading More Videos -->
+
+</div>

@@ -1,0 +1,38 @@
+﻿@model List<Agency>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Ajans Listeleme</h2>
+<hr />
+@Html.ActionLink("Yeni Kayıt", "Insert", "Agency", null, new { @class = "btn btn-primary" })
+<hr />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Ajans Adı</th>
+            <th>Adres</th>
+            <th>Telefon</th>
+            <th>Oluşturulma Tarihi</th>
+            <th>Durum</th>
+            <th>Güncelle | Sil</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Agency item in Model)
+        {
+            <tr>
+                <td>@item.AgencyName</td>
+                <td>@item.Address</td>
+                <td>@item.Phone</td>
+                <td>@item.CreatedDate</td>
+                <td>@item.Status</td>
+                <td>
+                    @Html.ActionLink("Güncelle", "Update", "Agency", new { id = item.ID }, new { @class = "btn btn-success" }) |
+                    @Html.ActionLink("Sil", "Delete", "Agency", new { id = item.ID }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

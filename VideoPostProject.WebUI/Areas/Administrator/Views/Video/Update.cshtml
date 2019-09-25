@@ -1,0 +1,47 @@
+﻿@model Video
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Video Güncelleme</h2>
+<hr />
+@using (Html.BeginForm("Update", "Video", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.ID)
+    @Html.HiddenFor(m => m.CreatedDate)
+    @Html.HiddenFor(m => m.CreatedIP)
+    @Html.HiddenFor(m => m.Status)
+    @Html.HiddenFor(m => m.ModifiedDate)
+    @Html.HiddenFor(m => m.ModifiedIP)
+    @Html.HiddenFor(m => m.Category.CategoryName)
+    @Html.HiddenFor(m => m.VideoPath)
+
+    <div class="form-group">
+        <label for="title">Başlık:</label>
+        @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Title)
+    </div>
+    <div class="form-group">
+        <label for="description">Açıklama:</label>
+        @Html.TextBoxFor(m => m.VideoDescription, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="category">Kategorisi:</label>
+        @Html.DropDownList("CategoryID", null, new { @class = "form-control" })
+        @Html.ValidationMessage("CategoryID")
+    </div>
+    <div class="form-group">
+        <label for="image">Video Seç:</label>
+        <input type="file" name="fluVideo" />
+    </div>
+    <button type="submit" class="btn btn-default">Güncelle</button>
+    <div>@ViewBag.Message</div>
+}
+
+
+@section scripts{
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}

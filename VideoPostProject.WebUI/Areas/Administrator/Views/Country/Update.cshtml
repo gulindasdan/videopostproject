@@ -1,0 +1,36 @@
+﻿@model Country
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Ülke Güncelleme</h2>
+<hr />
+@using (Html.BeginForm("Update", "Country", FormMethod.Post))
+{
+
+    @Html.HiddenFor(m => m.ID)
+    @Html.HiddenFor(m => m.CreatedDate)
+    @Html.HiddenFor(m => m.CreatedIP)
+    @Html.HiddenFor(m => m.Status)
+    @Html.HiddenFor(m => m.ModifiedDate)
+    @Html.HiddenFor(m => m.ModifiedIP)
+
+    <div class="form-group">
+        <label for="countryName">Ülke Adı:</label>
+        @Html.TextBoxFor(m => m.CountryName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CountryName)
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-default">Güncelle</button>
+        @Html.ActionLink("İptal", "Index", "Home", new { @class = "btn btn-default" })
+    </div>
+    <div>@ViewBag.Message</div>
+}
+
+
+@section scripts{
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}

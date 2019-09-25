@@ -1,0 +1,281 @@
+﻿@model Tuple<Video, List<Comment>, Comment, List<Subsribe>>
+@{
+    ViewBag.Title = "WatchVideo";
+}
+
+<div id="all-output" class="col-md-10">
+    <div class="row">
+        <!-- Watch -->
+        <div class="col-md-8">
+            <div id="watch">
+
+                <!-- Video Player -->
+                <h1 class="video-title">@Model.Item1.Title</h1>
+                <div class="video-code">
+                    <video width="650" height="415" frameborder="0" autoplay controls>
+                        <source src="~/Content/uploads/@Model.Item1.VideoPath" />
+                    </video>
+                </div><!-- // video-code -->
+
+                <div class="video-share">
+                    <ul class="like">
+                        @{
+                            User gelen = (User)Session["oturum"];
+                            if (Session["oturum"] == null)
+                            {
+                                <li><i class="fa fa-thumbs-up">@Model.Item1.LikeVideos.Where(m => m.Status != VideoPostProject.Core.Entity.Enum.Status.Deleted).Count()</i></li>
+                                <li><i class="fa fa-thumbs-down">@Model.Item1.DislikeVideos.Where(m => m.Status != VideoPostProject.Core.Entity.Enum.Status.Deleted).Count() </i></li>
+                            }
+                            else
+                            {
+                                <li class="layk"><button class="like" id="like" onclick="Like('@Model.Item1.ID')"> <i class="fa fa-thumbs-up" style="color:green">@Model.Item1.LikeVideos.Where(m => m.Status != VideoPostProject.Core.Entity.Enum.Status.Deleted).Count()</i></button></li>
+                                <li class="dislayk"><button class="dislike" id="dislike" onclick="Dislike('@Model.Item1.ID')"> <i class="fa fa-thumbs-down" style="color:red">@Model.Item1.DislikeVideos.Where(m => m.Status != VideoPostProject.Core.Entity.Enum.Status.Deleted).Count()</i></button></li>
+
+                            }
+                            <li><span>@Model.Item1.DisplayingNumber Görüntülenme</span></li>
+
+                        }
+
+                    </ul>
+                    <ul class="social_link">
+                        @if (Session["oturum"] != null)
+                        {
+                            if (ViewBag.Favori)
+                            {
+                                <li><button id="heart" class="heart" onclick="Favorite('@Model.Item1.ID')"><i class="fa fa-heart" aria-hidden="true" style="color:red;"></i></button></li>
+                            }
+                            else
+                            {
+                                <li><button id="heart" class="heart" onclick="Favorite('@Model.Item1.ID')"><i class="fa fa-heart" aria-hidden="true"></i></button></li>
+                            }
+                        }
+                        else
+                        {
+                            <li><button id="heart" class="heart"><i class="fa fa-heart" aria-hidden="true"></i></button></li>
+                        }
+
+                        <li><a class="facebook" href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a class="linkedin" href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                        <li><a class="google" href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                        <li><a class="twitter" href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a class="rss" href="#"><i class="fa fa-rss" aria-hidden="true"></i></a></li>
+                    </ul><!-- // Social -->
+                </div><!-- // video-share -->
+                <!-- // Video Player -->
+                <!-- Chanels Item -->
+                <div class="chanel-item">
+                    <div class="chanel-thumb">
+                        <a href="@Url.Action("AboutMe","Profile" , new { id=Model.Item1.User.ID })"><img src="~/Content/uploads/@Model.Item1.User.ImagePath" alt=""></a>
+                    </div>
+                    <div class="chanel-info">
+                        <a class="title" href="@Url.Action("AboutMe","Profile" , new { id=Model.Item1.User.ID })">@Model.Item1.User.Name @Model.Item1.User.Surname</a>
+                        <span class="subscribers">@Model.Item4.Where(m => m.FolowerID == Model.Item1.User.ID).Count()</span>
+                    </div>
+                    @if (Session["oturum"] != null)
+                    {
+                        var sonuc = Model.Item4.Any(m => m.FolowedID == gelen.ID && m.FolowerID == Model.Item1.User.ID);
+                        if (sonuc)
+                        {
+                            <button class="subscribe" name="subscribe" style="font-family: 'Roboto', sans-serif;
+    background-color: #00ff21;
+    height: 25px;
+    width: 85px;
+    text-align: center;
+    display: block;
+    float: right;
+    font-size: 11px;
+    font-weight: 900;
+    color: #FFF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-top: 25px;
+    position: relative;
+    z-index: 5;" onclick="Subscribe('@Model.Item1.User.ID')">
+                                Takip Ediliyor..
+                            </button>
+
+                        }
+                    }
+                    else
+                    {
+                        <button name="subscribe" class="subscribe" style="font-family: 'Roboto', sans-serif;
+    background-color: #becccc;
+    height: 25px;
+    width: 85px;
+    text-align: center;
+    display: block;
+    float: right;
+    font-size: 11px;
+    font-weight: 900;
+    color: #FFF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin-top: 25px;
+    position: relative;
+    z-index: 5;" onclick="Subscribe('@Model.Item1.User.ID')">
+                            Takip Et
+                        </button>
+                    }
+                </div>
+                <!-- // Chanels Item -->
+                <!-- Comments -->
+
+
+                <div id="comments" class="post-comments">
+                    <h3 class="post-box-title"><span>@Model.Item1.Comments.Count()</span> Comments</h3>
+
+                    <ul class="comments-list">
+                        @foreach (Comment item in Model.Item2)
+                        {
+                            <li id="commentlist">
+                                <div class="post_author">
+                                    <div class="img_in">
+                                        <a href="@Url.Action("AboutMe", "Profile", new { id = item.User.ID })"><img src="~/Content/uploads/@item.User.ImagePath" alt=""></a>
+                                    </div>
+                                    <a href="#" class="author-name">@item.User.Name @item.User.Surname</a>
+                                    <time datetime="2017-03-24T18:18">@item.CreatedDate</time>
+                                </div>
+                                <p>@item.CommentText</p>
+                            </li>
+                        }
+                    </ul>
+
+
+                    @if (Session["oturum"] != null)
+                    {
+                        <h3 class="post-box-title">Add Comments</h3>
+                        <form>
+                            <textarea class="form-control" typeof="text" rows="8" id="comment" placeholder="COMMENT"></textarea>
+                            @*@Html.TextAreaFor(m => m.Item3.CommentText)*@
+                            <button type="submit" id="commentbtn" onclick="Yorum('@Model.Item1.ID')" class="btn btn-dm">Yorum Yap</button>
+                        </form>
+
+                    }
+                    else
+                    {
+                        <h3>Yorum yapabilmek için kullanıcı girişi yapmalısınız !</h3>
+                        <span><a href="@Url.Action("Login","Login")" style="color:darkred;">Giriş yapın</a> veya <a href="@Url.Action("Register","Login")" style="color:darkred;">Üye olun...</a></span>
+                    }
+                </div>
+
+
+                <!-- // Comments -->
+
+
+            </div><!-- // watch -->
+        </div><!-- // col-md-8 -->
+        <!-- // Watch -->
+        <!-- Related Posts-->
+        <div class="col-md-4">
+            <div id="related-posts">
+                <!-- video item -->
+                <div class="related-video-item">
+                    <div class="thumb">
+                        <small class="time">10:53</small>
+                        <a href="#"><img src="~/Content/demo_img/v1.png" alt=""></a>
+                    </div>
+                    <a href="#" class="title">Lorem Ipsum is simply dummy text of the printing and </a>
+                    <a class="channel-name" href="#">
+                        Rabie Elkheir<span>
+                            <i class="fa fa-check-circle"></i>
+                        </span>
+                    </a>
+                </div>
+                <!-- // video item -->
+            </div>
+        </div><!-- // col-md-4 -->
+        <!-- // Related Posts -->
+    </div><!-- // row -->
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        function Yorum(id) {
+                var yorumunuz = $("#comment").val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/Video/Comments/'+ id +'',
+                    dataType: 'json',
+                    data: { yorum: yorumunuz },
+                    success: function () {
+                        $.get(function (data) {
+                            $("#comments-list").html(data);
+                        });
+
+                    @*$("#commentlist").append('<div class="post_author"> </div>' + data);
+                        $(".post-box-title span").append('@Model.Item1.Comments.Count()');*@
+                    }
+                })
+        }
+
+        function Like(id) {
+            $.ajax({
+                url: '/Video/Like/' + id + '',
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    $("#like").empty();
+                    $("#like").append('<i class="fa fa-thumbs-up" style="color:green"></i >'+ result);
+                    $("#dislike").empty();
+                    $("#dislike").append('<i class="fa fa-thumbs-down" style="color:red"></i>' + @Model.Item1.DislikeVideos.Where(m => m.Status != VideoPostProject.Core.Entity.Enum.Status.Deleted).Count());
+                }
+            })
+        }
+
+        function Dislike(id) {
+            $.ajax({
+                url: '/Video/Dislike/' + id + '',
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    $("#dislike").empty();
+                    $("#dislike").append('<i class="fa fa-thumbs-down" style="color:red"></i>' + result);
+                    $("#like").empty();
+                    $("#like").append('<i class="fa fa-thumbs-up" style="color:green"></i>' + @Model.Item1.LikeVideos.Where(m => m.Status != VideoPostProject.Core.Entity.Enum.Status.Deleted).Count());
+                }
+            });
+        }
+        function Favorite(id) {
+            $.ajax({
+                url: '/Video/Favorite/' + id + '',
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result == true) {
+                        $("#heart").empty();
+                        $("#heart").append('<i class="fa fa-heart" aria-hidden="true" style="color:red;"></i>');
+                    }
+                    else {
+                        $("#heart").empty();
+                        $("#heart").append('<i class="fa fa-heart" aria-hidden="true"></i>');
+                    }
+                }
+            });
+        }
+        function Subscribe(id) {
+            $.ajax({
+                type: 'POST',
+                url: '/Profile/Follow/' + id + '',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $(".subcribe").append("Takip Ediliyor..");
+                    if (data == false) {
+                        alert("Giriş Yapmalısınız!!");
+                    }
+                }
+                ,
+                error: function () {
+                    alert("Error while inserting data");
+                }
+            });
+        }
+
+
+    </script>
+}

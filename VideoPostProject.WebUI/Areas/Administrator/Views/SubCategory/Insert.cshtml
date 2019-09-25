@@ -1,0 +1,35 @@
+﻿@model SubCategory
+@{
+    ViewBag.Title = "Insert";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Video Alt Kategori Ekleme</h2>
+
+<hr />
+@using (Html.BeginForm("Insert", "SubCategory", FormMethod.Post))
+{
+    <div class="form-group">
+        <label for="categoryName">Kategori Adı:</label>
+        @Html.DropDownList("CategoryID", null, new { @class = "form-control" })
+        @Html.ValidationMessage("CategoryID")
+    </div>
+    <div class="form-group">
+        <label for="description">Alt Kategori Adı:</label>
+        @Html.TextBoxFor(m => m.SubCategoryName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.SubCategoryName)
+    </div>
+    <div class="form-group">
+        <label for="description">Açıklaması:</label>
+        @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-default">Kaydet</button>
+    <div>@ViewBag.Message</div>
+}
+
+
+@section scripts{
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}

@@ -1,0 +1,62 @@
+﻿@model Video
+@{
+    ViewBag.Title = "Upload";
+}
+
+
+<div id="all-output" class="col-md-10 upload">
+    <div id="upload">
+        <div class="row">
+            <!-- upload -->
+            <div class="col-md-8">
+                <h1 class="page-title"><span>Upload</span> Video</h1>
+              
+                <div class="row" style="background-color:gainsboro">
+                    @using (Html.BeginForm("Upload", "Video", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="col-md-8">
+                            <label>Başlık</label>
+                            @Html.TextBoxFor(m => m.Title, new { @class = "file" })
+                            @Html.ValidationMessageFor(m => m.Title)
+                        </div>
+                        <div class="col-md-6">
+                            <label>Kategori</label>
+                            @Html.DropDownList("CategoryID", null, new { @class = "file" })
+                        </div>
+
+                        <div class="col-md-8">
+                            <label>Video Yükle</label>
+                            <input type="file" class="file" name="fluVideo">
+                        </div>
+                        <div class="col-md-12">
+                            <label>Video Açıklama</label>
+                            @*<textarea class="form-control" rows="4" placeholder="COMMENT"></textarea>*@
+                            @Html.TextAreaFor(m => m.VideoDescription, new { @class = "form-control", @rows = "4", @placeholder = "COMMENT" })
+                            @*@Html.ValidationMessageFor(m => m.VideoDescription)*@
+                        </div>
+                        @*<div class="col-md-6">
+                <label>Post Featured Image</label>
+                <input id="featured_image" type="file" class="file">
+            </div>*@
+                        <div class="col-md-6">
+                            <button type="submit" id="contact_submit" class="btn btn-dm">Save your post</button>
+                        </div>
+                    }
+                </div>
+                
+            </div><!-- // col-md-8 -->
+
+            <div class="col-md-4">
+                <a href="#"><img src="~/Content/demo_img/upload-adv.png" alt=""></a>
+            </div><!-- // col-md-8 -->
+            <!-- // upload -->
+        </div><!-- // row -->
+    </div><!-- // upload -->
+</div>
+
+
+@section scripts{
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}

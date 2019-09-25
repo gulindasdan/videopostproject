@@ -1,0 +1,348 @@
+﻿@model User
+@{
+    ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="width:1094px; margin-left:230px;">
+    <section class="topProfile topProfile-inner" style="background: url('images/profile-bg1.png') no-repeat;">
+        <div class="row">
+            <div class="large-12 columns">
+                <div class="upload-bg">
+                    <form method="post">
+                        <label for="topfileupload" class="btn-upload"><i class="fa fa-camera"></i><span>update cover image</span></label>
+                        <input type="file" id="topfileupload" class="show-for-sr">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-stats">
+            <div class="row secBg">
+                <div class="large-12 columns">
+                    <div class="profile-author-img">
+                        @if (Model.ImagePath != null)
+                        {
+                            <img src="~/Content/uploads/@Model.ImagePath" alt="profile author img">
+                        }
+                        else
+                        {
+                            <img src="~/Content/img/user.png" alt="profile author img">
+                        }
+                        @*<form method="post">
+            <label for="imgfileupload" class="btn-upload"><i class="fa fa-camera"></i><span>update Avatar</span></label>
+            <input type="file" id="imgfileupload" class="show-for-sr">
+        </form>*@
+                    </div>
+                    <div class="profile-subscribe">
+                        <span><i class="fa fa-users"></i>@Model.Subsribes.Where(m => m.FolowedID == Model.ID).Count()</span>
+                        @{
+                            User gelen = (User)Session["oturum"];
+                            if (Session["oturum"] != null || Model.ID == gelen.ID)
+                            {
+                                <span> </span>
+                            }
+                            else
+                            {
+                                <button type="submit" name="subscribe">subscribe</button>
+                            }
+                        }
+                    </div>
+                    <div class="profile-share">
+                        <div class="easy-share" data-easyshare data-easyshare-http data-easyshare-url="http://joinwebs.com">
+                            <!-- Facebook -->
+                            <button data-easyshare-button="facebook">
+                                <span class="fa fa-facebook"></span>
+                                <span>Share</span>
+                            </button>
+                            <span data-easyshare-button-count="facebook">0</span>
+                            <!-- Twitter -->
+                            <button data-easyshare-button="twitter" data-easyshare-tweet-text="">
+                                <span class="fa fa-twitter"></span>
+                                <span>Tweet</span>
+                            </button>
+                            <span data-easyshare-button-count="twitter">0</span>
+                            <!-- Google+ -->
+                            <button data-easyshare-button="google">
+                                <span class="fa fa-google-plus"></span>
+                                <span>+1</span>
+                            </button>
+                            <span data-easyshare-button-count="google">0</span>
+                            @*<div data-easyshare-loader>Loading...</div>*@
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="profile-author-name float-left">
+                            <h4>@Model.Name @Model.Surname</h4>
+                            <p>Join Date : <span>@Model.CreatedDate</span></p>
+                        </div>
+                        <div class="profile-author-stats float-right">
+                            <ul class="menu">
+                                <li>
+                                    <div class="icon float-left">
+                                        <i class="fa fa-video-camera"></i>
+                                    </div>
+                                    <div class="li-text float-left">
+                                        <p class="number-text">@Model.Videos.Where(m => m.Status != VideoPostProject.Core.Entity.Enum.Status.Deleted).Count()</p>
+                                        <span>Video</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon float-left">
+                                        <i class="fa fa-heart"></i>
+                                    </div>
+                                    <div class="li-text float-left">
+                                        <p class="number-text">@Model.Favorites.Where(m => m.Status != VideoPostProject.Core.Entity.Enum.Status.Deleted).Count()</p>
+                                        <span>Favori</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="icon float-left">
+                                        <i class="fa fa-users"></i>
+                                    </div>
+                                    <div class="li-text float-left">
+                                        <p class="number-text">@Model.Subsribes.Where(m => m.FolowedID == Model.ID).Count()</p>
+                                        <span>Takipçi</span>
+                                    </div>
+                                </li>
+                                @*<li>
+                                        <div class="icon float-left">
+                                            <i class="fa fa-comments-o"></i>
+                                        </div>
+                                        <div class="li-text float-left">
+                                            <p class="number-text">26</p>
+                                            <span>comments</span>
+                                        </div>
+                                    </li>*@
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- End profile top section -->
+    <div class="row">
+        <!-- left sidebar -->
+        <div class="large-4 columns">
+            <aside class="secBg sidebar">
+                <div class="row">
+                    <!-- profile overview -->
+                    <div class="large-12 columns">
+                        <div class="widgetBox">
+                            <div class="widgetTitle">
+                                <h5>Profil Düzenle</h5>
+                            </div>
+                            <div class="widgetContent">
+                                <ul class="profile-overview">
+                                    <li class="clearfix"><a href="@Url.Action("AboutMe", "Profile", new { id = Model.ID })"><i class="fa fa-user"></i>Hakkımda</a></li>
+                                    <li class="clearfix"><a href="@Url.Action("Videos", "Profile", new { id = Model.ID })"><i class="fa fa-video-camera"></i>Videolar<span class="float-right">@Model.Videos.Where(m => m.Status != VideoPostProject.Core.Entity.Enum.Status.Deleted).Count()</span></a></li>
+                                    <li class="clearfix"><a href="@Url.Action("FavoriteVideos", "Profile", new { id = Model.ID })"><i class="fa fa-heart"></i>Favoriler<span class="float-right">@Model.Favorites.Where(m => m.Status != VideoPostProject.Core.Entity.Enum.Status.Deleted).Count()</span></a></li>
+                                    <li class="clearfix"><a  href="@Url.Action("Followers", "Profile", new { id = Model.ID })"><i class="fa fa-users"></i>Takipçiler<span class="float-right"></span></a></li>
+
+
+                                    @{
+                                        @*User gelen2 = (User)Session["oturum"];*@
+                                        if (Session["oturum"] != null && Model.ID == gelen.ID)
+                                        {
+                                            <li class="clearfix"><a class="active" href="@Url.Action("Settings", "Profile", new { id = Model.ID })"><i class="fa fa-gears"></i>Profili Düzenle</a></li>
+                                            <li class="clearfix"><a href="@Url.Action("Logout", "Login")"><i class="fa fa-sign-out"></i>Çıkış</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li><span></span> </li>
+                                        }
+                                    }
+                                </ul>
+                                @{
+                                    if (Session["oturum"] != null && Model.ID == gelen.ID)
+                                    {
+                                        <a href="@Url.Action("Upload", "Video")" class="button"><i class="fa fa-plus-circle"></i>Submit Video</a>
+                                    }
+                                    else
+                                    {
+                                        <span> </span>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div><!-- End profile overview -->
+                </div>
+            </aside>
+        </div><!-- end sidebar -->
+        <!-- right side content area -->
+        <div class="large-8 columns profile-inner">
+            <!-- profile settings -->
+            <section class="profile-settings">
+                <div class="row secBg">
+                    <div class="large-12 columns">
+                        <div class="heading">
+                            <i class="fa fa-gears"></i>
+                            <h4>Profili Düzenle</h4>
+                        </div>
+                        <div class="row">
+                            <div class="large-12 columns">
+                                <div class="setting-form">
+                                    @using (Html.BeginForm("Settings", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.HiddenFor(m => m.ID)
+                                        @Html.HiddenFor(m => m.CreatedDate)
+                                        @Html.HiddenFor(m => m.CreatedIP)
+                                        @Html.HiddenFor(m => m.Status)
+                                        @Html.HiddenFor(m => m.ModifiedDate)
+                                        @Html.HiddenFor(m => m.ModifiedIP)
+                                        @Html.HiddenFor(m => m.ImagePath)
+                                        @Html.HiddenFor(m => m.CoverImagePath)
+                                        @Html.HiddenFor(m => m.Gender)
+                                        @Html.HiddenFor(m => m.BirthDate)
+                                        @Html.HiddenFor(m => m.isAdministrator)
+                                        @Html.HiddenFor(m => m.Password)
+
+
+                                        <div class="setting-form-inner">
+                                            <div class="row">
+                                                <div class="large-12 columns">
+                                                    <h6 class="borderBottom">Username Setting:</h6>
+                                                </div>
+                                                <div class="medium-6 columns">
+                                                    <label>
+                                                        First Name:
+                                                        @Html.TextBoxFor(m => m.Name)
+                                                        @Html.ValidationMessageFor(m => m.Name)
+                                                    </label>
+                                                </div>
+                                                <div class="medium-6 columns">
+                                                    <label>
+                                                        Last Name:
+                                                        @Html.TextBoxFor(m => m.Surname)
+                                                        @Html.ValidationMessageFor(m => m.Surname)
+                                                    </label>
+                                                </div>
+                                                <div class="medium-6 columns">
+                                                    <label>
+                                                        User Name:
+                                                        @Html.TextBoxFor(m => m.Username)
+                                                        @Html.ValidationMessageFor(m => m.Username)
+                                                    </label>
+                                                </div>
+                                                <div class="medium-6 columns">
+                                                    <label>
+                                                        Channel Name:
+                                                        @Html.TextBoxFor(m => m.ChannelName)
+                                                    </label>
+                                                </div>
+                                                <div class="medium-6 columns">
+                                                    <label>
+                                                        Channel Type:
+                                                        @Html.DropDownList("CategoryID")
+                                                    </label>
+                                                </div>
+                                                <div class="medium-6 columns">
+                                                    <label>
+                                                        Country
+                                                        @Html.DropDownList("CountryID")
+                                                    </label>
+                                                </div>
+                                                <div class="medium-6 columns">
+                                                    <label for="image">Profil Resmi:</label>
+                                                    <input type="file" name="fluResim" />
+                                                </div>
+                                                <div class="medium-6 columns">
+                                                    <label>
+                                                        Yeni Şifre:
+                                                        @Html.TextBoxFor(m => m.Password, new { @type = "password" })
+                                                        @Html.ValidationMessageFor(m => m.Password)
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<div class="setting-form-inner">
+                                                <div class="row">
+                                                    <div class="large-12 columns">
+                                                        <h6 class="borderBottom">Update Password:</h6>
+                                                    </div>
+
+                                                </div>
+                                            </div>*@
+                                        <div class="setting-form-inner">
+                                            <div class="row">
+                                                <div class="large-12 columns">
+                                                    <h6 class="borderBottom">About Me:</h6>
+                                                </div>
+                                                <div class="medium-6 columns">
+                                                    <label>
+                                                        Email :
+                                                        @Html.TextBoxFor(m => m.EmailAddress, new { @type = "email" })
+                                                        @Html.ValidationMessageFor(m => m.EmailAddress)
+                                                    </label>
+                                                </div>
+
+                                                <div class="medium-6 columns">
+                                                    <label>
+                                                        Phone No:
+                                                        @Html.TextBoxFor(m => m.Phone)
+                                                    </label>
+                                                </div>
+                                                <div class="medium-6 columns end">
+                                                    <label>
+                                                        Birth Date:
+                                                        @Html.TextBoxFor(m => m.BirthDate, new { @type = "date" })
+                                                    </label>
+                                                </div>
+                                                <div class="medium-12 columns">
+                                                    <label>
+                                                        Bio Description:
+                                                        @Html.TextAreaFor(m => m.BioDescription)
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="setting-form-inner">
+                                            <div class="row">
+                                                <div class="large-12 columns">
+                                                    <h6 class="borderBottom">Sosyal Medya:</h6>
+                                                </div>
+                                                <div class="medium-6 columns">
+                                                    <label>
+                                                        facebook:
+                                                        <input type="url" placeholder="enter your profile link..">
+                                                    </label>
+                                                </div>
+                                                <div class="medium-6 columns">
+                                                    <label>
+                                                        twitter:
+                                                        <input type="url" placeholder="enter your profile link..">
+                                                    </label>
+                                                </div>
+                                                <div class="medium-6 columns">
+                                                    <label>
+                                                        Instagram:
+                                                        <input type="url" placeholder="enter your profile link..">
+                                                    </label>
+                                                </div>
+                                                <div class="medium-6 columns end">
+                                                    <label>
+                                                        Google:
+                                                        <input type="url" placeholder="enter your profile link..">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="setting-form-inner">
+                                            <button class="button expanded" type="submit" name="setting">Güncelle</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section><!-- End profile settings -->
+        </div><!-- end left side content area -->
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+}

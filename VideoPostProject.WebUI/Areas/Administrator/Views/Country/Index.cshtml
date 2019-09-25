@@ -1,0 +1,43 @@
+﻿@model List<Country>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Administrator/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ülkelerin Listesi</h2>
+<hr />
+@Html.ActionLink("Yeni Kayıt", "Insert", "Country", null, new { @class = "btn btn-primary" })
+<hr />
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Ülke Adı</th>
+            <th>Oluşturulma Tarihi</th>
+            <th>Durum</th>
+            <th>Güncelle | Sil</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Country item in Model)
+        {
+            <tr>
+                <td>@item.CountryName</td>
+                <td>@item.CreatedDate</td>
+                <td>
+                    @if (item.Status != Status.Deleted)
+                    {
+                        <span style="background-color:#1daa1c; font-weight:bold; color:#ffffff; padding:7px 20px;">@item.Status</span>
+                    }
+                    else
+                    {
+                        <span style="background-color:#ff0000; color:#ffffff; font-weight:bold; padding:7px 20px;">@item.Status</span>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Güncelle", "Update", "Country", new { id = item.ID }, new { @class = "btn btn-success" }) |
+                    @Html.ActionLink("Sil", "Delete", "Country", new { id = item.ID }, new { @class = "btn btn-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
